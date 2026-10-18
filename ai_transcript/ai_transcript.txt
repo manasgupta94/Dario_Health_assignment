@@ -1,0 +1,11 @@
+AI conversation transcript for the weather dashboard assignment.
+
+1. User request: choose a suitable free public API and build a product aligned to project requirements.
+2. Assistant recommendation: use Open-Meteo because it is free, no key required, and easy to use.
+3. Product concept: a city weather intelligence dashboard for comparing weather conditions across cities.
+4. Data model discussion: city-level daily forecast table with date, max temperature, min temperature, precipitation, weather code, and quality checks.
+5. ETL design: fetch data, save raw JSON locally, transform to a tabular DataFrame, validate data quality, and save processed outputs.
+6. Dashboard design: Streamlit app with city filter, summary cards, charts for temperature and rainfall, and a data quality section.
+7. Validation emphasis: handle missing values, invalid temperatures, negative precipitation, duplicates, invalid weather codes, and failed API calls.
+8. Output documentation: README to include run instructions, architecture, assumptions, AI usage, and future improvements.
+9. Final direction: implement a reliable weather dashboard that meets assignment constraints and uses no paid or private data access.
