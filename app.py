@@ -44,19 +44,34 @@ if filtered_df.empty:
     st.stop()
 
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Avg Max Temp", f"{filtered_df['temp_max_c'].mean():.1f}°C")
-col2.metric("Avg Min Temp", f"{filtered_df['temp_min_c'].mean():.1f}°C")
-col3.metric("Total Rainfall", f"{filtered_df['precipitation_mm'].sum():.1f} mm")
-col4.metric("Weather Quality", quality["status"].title())
+col1.metric("Avg. daily high", f"{filtered_df['temp_max_c'].mean():.1f}°C")
+col2.metric("Avg. daily low", f"{filtered_df['temp_min_c'].mean():.1f}°C")
+col3.metric("Forecast precipitation", f"{filtered_df['precipitation_mm'].sum():.1f} mm")
+col4.metric("Data quality", quality["status"].title())
 
 st.subheader(f"Temperature trend for {selected_city}")
-st.line_chart(filtered_df.set_index("date")[["temp_max_c", "temp_min_c"]])
+temperature_chart = filtered_df.set_index("date")[["temp_max_c", "temp_min_c"]].rename(
+    columns={"temp_max_c": "Daily high (°C)", "temp_min_c": "Daily low (°C)"}
+)
+st.line_chart(temperature_chart)
 
-st.subheader("Precipitation overview")
-st.bar_chart(filtered_df.set_index("date")["precipitation_mm"])
+st.subheader("Daily precipitation")
+precipitation_chart = filtered_df.set_index("date")["precipitation_mm"].rename("Precipitation (mm)")
+st.bar_chart(precipitation_chart)
 
 st.subheader("Weather summary table")
-st.dataframe(filtered_df[["date", "temp_max_c", "temp_min_c", "precipitation_mm", "weather_description"]].sort_values("date"), use_container_width=True)
+weather_table = filtered_df[
+    ["date", "temp_max_c", "temp_min_c", "precipitation_mm", "weather_description"]
+].sort_values("date").rename(
+    columns={
+        "date": "Forecast date",
+        "temp_max_c": "Daily high (°C)",
+        "temp_min_c": "Daily low (°C)",
+        "precipitation_mm": "Precipitation (mm)",
+        "weather_description": "Conditions",
+    }
+)
+st.dataframe(weather_table, use_container_width=True)
 
 st.subheader("Data quality checks")
 st.json(quality)
